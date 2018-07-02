@@ -1,0 +1,157 @@
+<html>
+	<head>
+		<meta charset="UTF8">
+		<script src="data.js"></script>
+		<link href="style.css" rel="stylesheet" type="text/css" />
+	</head>
+
+<body>
+
+	<div id="l1" class="select-wrapper" >
+		<select id="sl1" class="select" >
+			<option>Izaberite stavku</option>
+		</select>
+	</div>
+	<div id="l2" class="select-wrapper" style="display: none;">
+		<select id="sl2" class="select">
+			<option>Izaberite stavku</option>
+		</select>
+	</div>
+	<div id="l3" class="select-wrapper" style="display: none;">
+		<select id="sl3" class="select">
+			<option>Izaberite stavku</option>
+		</select>
+	</div>
+	<div id="l4" class="select-wrapper" style="display: none;">
+		<select id="sl4" class="select">
+			<option>Izaberite stavku</option>
+		</select>
+	</div>
+	 
+	<script>
+		function Node(data, parent) {
+			this.data = data;
+			this.parent = parent;
+			this.children = [];
+		}
+		
+		function Tree(data) {
+			var node = new Node(data, null);
+			this._root = node;
+		}
+		
+		Tree.prototype.traverseDF = function(callback) {
+			(function recurse(currentNode) {
+				for(var i=0, length= currentNode.children.length; i<length; i++) {
+					recurse(currentNode.children[i]);
+				}
+				
+				callback(currentNode);
+			}
+			)(this._root);
+		}
+		
+		Tree.prototype.find =function(node, id, callback) {
+			if(node.data.id == id) callback(node);
+			
+				for(var i=0, length= node.children.length; i<length; i++) {
+					tree.find(node.children[i], id, callback);
+				}
+		}
+		
+		var tree = new Tree("Anketa");
+		
+		nodesString = getData();
+		var numNodes=0;
+		
+		var nodes = JSON.parse(nodesString);
+		nodes.forEach(function(node) {
+			var a = node.id.split(".");
+			var parent="";
+			for(var i=0; i<a.length; i++) {
+				if(a[i+1]) {
+					parent += a[i]+".";
+				}
+			}
+			
+			//console.log(node.id, parent);
+			
+			try {
+				if(parent=="") {
+					tree._root.children.push(new Node({id:node.id, name: node.name}, parent));
+					//console.log("ROOT ADDED ", node.id);
+					numNodes++;
+				} else {
+					tree.find(tree._root, parent, function(parentNode) {
+						//console.log(" PARENT NODE ", parentNode);
+						parentNode.children.push(new Node({id:node.id, name: node.name}, parent));
+						numNodes++;
+						//console.log("CHILD ADDED ", node.id, " TO PARENT ", parent);
+						});
+				}		
+			} catch (e) {
+				console.log(e, " PARENT ", parent)
+				debugger
+			}
+		});
+		console.log("DODATO NODOVA: ", numNodes);
+		
+		tree._root.children.sort(function(a, b) { 
+		//1.1.4. - last num  4
+		a = a.data.id;
+		b = b.data.id;
+			if(a.length>0 && a.substr(a.length-1, 1) != ".") a += ".";
+			if(a.length) {
+					var aNum = a.split(".")[a.split(".").length-2];
+					var bNum = b.split(".")[b.split(".").length-2];
+					if(Number(aNum) < Number(bNum)) {
+						return -1;
+					}
+					if(Number(aNum) > Number(bNum)) {
+						return 1;
+					}	
+					return 0;
+			}
+			return 0;
+	
+		});
+		
+		var korak=1;
+		
+		document.addEventListener('DOMContentLoaded',function() {
+			fillSelect("sl" + korak, tree._root) ;
+		},false);
+	
+		
+		function sledeciKorak(node) {
+			console.log(node);
+			korak++;
+			if(korak<=4) {
+				document.querySelector("#l"+korak).style.display = 'block';
+				fillSelect("sl" + korak, node);
+			}
+			
+		}
+		
+		function fillSelect(select, node) {
+			console.log("FillSelect ", select, node);
+			var select = document.querySelector("#"+select);
+				node.children.forEach(function(node) {
+					select.options[select.options.length] = new Option(node.data.id + " " + node.data.name, node.data.id);
+					
+				});
+			
+				select.onchange =function nextLevel(event) {
+					tree.find(node, this.value, sledeciKorak);
+				}
+		}
+		
+	
+		
+	</script>
+	
+
+	
+</body>
+
+</html>
