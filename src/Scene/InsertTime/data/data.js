@@ -23,11 +23,11 @@ Tree.prototype.traverseDF = function(callback) {
     )(this._root);
 }
 
-Tree.prototype.find =function(node, id, callback) {
-    if(node.data.id == id) callback(node);
+Tree.prototype.find =function(node, id, callback, step) {
+    if(node.data.id == id) callback(node, step);
     
         for(let i=0, length= node.children.length; i<length; i++) {
-            tree.find(node.children[i], id, callback);
+            tree.find(node.children[i], id, callback, step);
         }
 }
 
