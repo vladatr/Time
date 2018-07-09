@@ -37,7 +37,7 @@ class SelectProjectTasks extends React.Component {
     
         return(
          <React.Fragment>
-          { korak>=0 &&  <div className="select-project-task1">
+          { korak>=0 &&  <div className="select-project select-project-task1">
                              <div>Programi</div>
                             <select onChange={this.onChangeSelect1}   value={selectedValues[0]}> 
                                    <FirstItem />
@@ -45,7 +45,7 @@ class SelectProjectTasks extends React.Component {
                                 </select> 
             </div> }
             
-        { korak>=1 && <div className="select-project-task2">
+        { korak>=1 && <div className="select-project select-project-task2">
                         <div>Postupci</div>
                         <select onChange={this.onChangeSelect2}   value={selectedValues[1]}> 
                                 <FirstItem />
@@ -53,7 +53,7 @@ class SelectProjectTasks extends React.Component {
                                 </select> 
               </div> }
             
-        { korak>=2 && <div className="select-project-task3">
+        { korak>=2 && <div className="select-project select-project-task3">
                         <div>Zadaci</div>
                         <select onChange={this.onChangeSelect3}   value={selectedValues[2]}> 
                                 <FirstItem />
@@ -61,7 +61,7 @@ class SelectProjectTasks extends React.Component {
                                 </select> 
            </div> }
   
-        { korak>=3 && <div className="select-project-task4">
+        { korak>=3 && <div className="select-project select-project-task4">
                          <div>Aktivnosti</div>
                             <select onChange={this.onChangeSelect4}   value={selectedValues[3]}> 
                                     <FirstItem />

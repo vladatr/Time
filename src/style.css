@@ -17,3 +17,23 @@
     color: blue;
     text-align: center;
  }
+
+ .left,  .right {
+     float: left;
+     padding: 20px;
+     width: 40%;
+ }
+
+ .right select {
+     width: 100%
+ }
+
+ .select-project {
+     padding: 15px;
+     font-family: "Verdana"
+ }
+
+ .section-day-overview {
+     margin-top: 25px;
+     font-family: "Verdana"
+ }
