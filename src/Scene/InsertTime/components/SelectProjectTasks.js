@@ -37,30 +37,37 @@ class SelectProjectTasks extends React.Component {
     
         return(
          <React.Fragment>
-            <div className="select-project-task1">
-        { korak>=0 && <select onChange={this.onChangeSelect1}   value={selectedValues[0]}> 
+          { korak>=0 &&  <div className="select-project-task1">
+                             <div>Programi</div>
+                            <select onChange={this.onChangeSelect1}   value={selectedValues[0]}> 
                                    <FirstItem />
                                   {nodes[0].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
-                                </select> }
-            </div>
-            <div className="select-project-task2">
-        { korak>=1 && <select onChange={this.onChangeSelect2}   value={selectedValues[1]}> 
+                                </select> 
+            </div> }
+            
+        { korak>=1 && <div className="select-project-task2">
+                        <div>Postupci</div>
+                        <select onChange={this.onChangeSelect2}   value={selectedValues[1]}> 
                                 <FirstItem />
                                   {nodes[1].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
-                                </select> }
-              </div>
-            <div className="select-project-task3">
-        { korak>=2 && <select onChange={this.onChangeSelect3}   value={selectedValues[2]}> 
+                                </select> 
+              </div> }
+            
+        { korak>=2 && <div className="select-project-task3">
+                        <div>Zadaci</div>
+                        <select onChange={this.onChangeSelect3}   value={selectedValues[2]}> 
                                 <FirstItem />
                                   {nodes[2].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
-                                </select> }
-           </div>
-            <div className="select-project-task4">
-        { korak>=3 && <select onChange={this.onChangeSelect4}   value={selectedValues[3]}> 
+                                </select> 
+           </div> }
+  
+        { korak>=3 && <div className="select-project-task4">
+                         <div>Aktivnosti</div>
+                            <select onChange={this.onChangeSelect4}   value={selectedValues[3]}> 
                                     <FirstItem />
                                   {nodes[3].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
-                                </select> }
-                </div>
+                                </select> 
+                </div> }
          </React.Fragment>
         ) 
     }
