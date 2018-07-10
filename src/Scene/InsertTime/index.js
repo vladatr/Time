@@ -69,8 +69,10 @@ class InsertTime extends React.Component {
                     </select>
                     {activityType==1 && <SelectProjectTasks /> }
                     {activityType==2 && <SelectProjectAdditional /> }
-                    {activityType==3 && <SelectOtherTasks /> }
-                    {activityType==4 && <SelectNonProjectActivities /> }
+                    {activityType==3 && <SelectNonProjectActivities /> }
+                    {activityType==4 && <SelectOtherTasks /> }
+
+                    
                 </div>
             </React.Fragment>
         )

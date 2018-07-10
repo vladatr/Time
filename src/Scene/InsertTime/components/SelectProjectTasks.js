@@ -38,7 +38,7 @@ class SelectProjectTasks extends React.Component {
         return(
          <React.Fragment>
           { korak>=0 &&  <div className="select-project select-project-task1">
-                             <div>Programi</div>
+                             <h3>Programi</h3>
                             <select onChange={this.onChangeSelect1}   value={selectedValues[0]}> 
                                    <FirstItem />
                                   {nodes[0].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
@@ -46,7 +46,7 @@ class SelectProjectTasks extends React.Component {
             </div> }
             
         { korak>=1 && <div className="select-project select-project-task2">
-                        <div>Postupci</div>
+                        <h3>Postupci</h3>
                         <select onChange={this.onChangeSelect2}   value={selectedValues[1]}> 
                                 <FirstItem />
                                   {nodes[1].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
@@ -54,7 +54,7 @@ class SelectProjectTasks extends React.Component {
               </div> }
             
         { korak>=2 && <div className="select-project select-project-task3">
-                        <div>Zadaci</div>
+                        <h3>Zadaci</h3>
                         <select onChange={this.onChangeSelect3}   value={selectedValues[2]}> 
                                 <FirstItem />
                                   {nodes[2].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
@@ -62,7 +62,7 @@ class SelectProjectTasks extends React.Component {
            </div> }
   
         { korak>=3 && <div className="select-project select-project-task4">
-                         <div>Aktivnosti</div>
+                         <h3>Aktivnosti</h3>
                             <select onChange={this.onChangeSelect4}   value={selectedValues[3]}> 
                                     <FirstItem />
                                   {nodes[3].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
