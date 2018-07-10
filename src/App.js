@@ -6,7 +6,7 @@ import AppFrame from './components/AppFrame'
 class App extends React.Component {
     render() {
         return(
-            <Router basename={'/'}>
+            <Router basename={'/time2/'}>
                 <React.Fragment>
                      <AppFrame />
                 </React.Fragment>

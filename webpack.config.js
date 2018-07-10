@@ -22,7 +22,7 @@ const webpackConfig = {
     output: {
         path: __dirname + '/dist',
         filename: 'index_bundle.js',
-        publicPath: '/'
+        publicPath: '/time2/'
     },
     module: {
         rules: [
