@@ -9,8 +9,10 @@ class Header extends React.Component {
         return(
             <section>
                 <h2>Merenje vremena</h2>
-                <Link to="/Vreme">Vremena </Link>
-                <Link to="/Projekti">Prijekti </Link>
+                <ul>
+                   <li> <Link to="/Vreme">Vremena </Link> </li>
+                   <li>  <Link to="/Projekti">Projekti </Link> </li>
+                </ul>
             </section>
         )
     }

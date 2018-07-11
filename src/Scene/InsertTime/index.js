@@ -22,8 +22,6 @@ class InsertTime extends React.Component {
     }
 
     dataEntered = (dataEntered, values) => {
-        debugger
-        console.log(dataEntered, values)
         this.setState({...this.state, dataEntered, values})
     }
 
@@ -35,34 +33,50 @@ class InsertTime extends React.Component {
     }
 
     onChangeDate = date => {
-        dayList("aca", this.formatDateMySQL(date))
+        console.log("Get times for " + date)
+        dayList("test", this.formatDateMySQL(date))
             .then( res => {
-                debugger
-                this.setState({registrations:res.data,  activityType: 0, date }) 
+                this.setState({...this.state, registrations:res.data,  activityType: 0, date, dataEntered: false }) 
             })  
     }
 
     onSave = () => {
         //storeTime = (user, date, time, type, values, h, m)
-        const {date, h, m, activityType, values} = this.state
+        const {date, h, m, activityType, selectedProject, values} = this.state
         const time=h*60+m*1
-        console.log("test", date, time, activityType, values)
+        console.log("Sacuvaj vreme za: test", this.formatDateMySQL(date), time, activityType, selectedProject, values)
+        storeTime("test", selectedProject, this.formatDateMySQL(date), time, activityType,  values)
+            .then( res => {
+                if(res == "ok") {
+                    this.setState({...this.state, activityType: 0, dataEntered: false, values: [] }, function() {
+                        this.onChangeDate(this.state.date)
+                    }) 
+                } else {
+                    alert("Greska")
+                }
+
+            })
     }
 
     onChangeSelect = event => this.setState({...this.state, activityType: event.target.value, dataEntered: false})
+
     onProjectChange  = event => this.setState({...this.state, selectedProject: event.target.value})
-    timeChange = (params) => {
-        debugger
+
+    timeChange = () => {
         this.setState({...this.state, h: this.refs.h.value, m: this.refs.m.value})
     }
 
     componentDidMount() {
-        console.log("get projects")
-        this.setState({...this.state, projects: [{id: 12, name:"project 1"},{id: 15, name:"project 2"}]})
+        debugger
+        getProjects("").then(res => this.setState({...this.state, projects: res}, function() {
+            this.onChangeDate(this.state.date)
+        }))
+
     }
 
     render() {
         const {date, activityType, registrations, dataEntered, h, m, projects, selectedProject } = this.state
+        console.log("registrations", registrations)
         return(
             <React.Fragment>
                 <div className="left">
@@ -74,9 +88,9 @@ class InsertTime extends React.Component {
                     </div>   
                     <div className="section-day-overview">
                         <table width="300px">
-                            <tr> <th>Pocetak</th> <th>Kraj</th> <th>Projekat</th> </tr>
+                            <tr> <th>Projekat</th> <th>Tip</th> <th>Sifra aktivnosti</th> <th>Trajanje</th></tr>
                          {registrations.length && 
-                                registrations.map( item => <tr><td>{item.begin}</td><td> {item.end} </td><td>{item.project} </td></tr> )}
+                                registrations.map( item => <tr><td>{item.name}</td><td> {item.tip} </td><td>{item.value4} </td><td>{item.duration} </td></tr> )}
                         </table>
                     </div>
                 </div>
@@ -91,10 +105,11 @@ class InsertTime extends React.Component {
                         <option value="4">Vreme koje nije vezano za posao</option>
 
                     </select>
-                    {activityType>0 && <div> <h3>Izaberi projekat</h3>
-                                     <select onChange={onProjectChange} value={selectedProject}>
+                    {activityType>0 && <div> <h5>Izaberi projekat</h5>
+                                     <select onChange={this.onProjectChange} value={selectedProject}>
+                                     <option value="0">--Izaberite stavku--</option>
                                         {projects && projects.length &&
-                                            projects.map(project => <div>{project.id} - {project.name}</div>)
+                                            projects.map(project => <option value={project.id}>{project.id} - {project.name}</option>)
                                         }
                                     </select>
                                 </div>
@@ -105,8 +120,8 @@ class InsertTime extends React.Component {
                     {activityType==4 && <SelectOtherTasks dataEntered={this.dataEntered}  /> }
                     {dataEntered && <div className="time-form">
                                         <span>Vreme </span>
-                                        <input ref="h" type="text" value={h} onChange={this.timeChange} /> : 
-                                        <input ref="m" type="text" value={m} onChange={this.timeChange} /> 
+                                        <input ref="h" type="text" value={h} onChange={this.timeChange} size={4} /> : 
+                                        <input ref="m" type="text" value={m} onChange={this.timeChange} size={4} /> 
                                         <p><button className="button-save" onClick={this.onSave}>Sacuvaj</button></p>
                                     </div>
                     }

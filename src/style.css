@@ -34,10 +34,14 @@
  }
 
  .section-day-overview {
-     margin-top: 25px;
+     margin-top: 10px;
      font-family: "Verdana"
  }
 
  input {
      padding: 3px 10px;
+ }
+
+ h5 {
+     margin: 5px;
  }

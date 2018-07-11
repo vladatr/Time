@@ -42,7 +42,7 @@ class SelectProjectTasks extends React.Component {
         return(
          <React.Fragment>
           { korak>=0 &&  <div className="select-project select-project-task1">
-                             <h3>Programi</h3>
+                             <h5>Programi</h5>
                             <select onChange={(event) => this.onChangeSelect(event, 0)}   value={values[0]}> 
                                    <FirstItem />
                                   {nodes[0].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
@@ -50,7 +50,7 @@ class SelectProjectTasks extends React.Component {
             </div> }
             
         { korak>=1 && <div className="select-project select-project-task2">
-                        <h3>Postupci</h3>
+                        <h5>Postupci</h5>
                         <select onChange={(event) => this.onChangeSelect(event, 1)}   value={values[1]}> 
                                 <FirstItem />
                                   {nodes[1].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
@@ -58,7 +58,7 @@ class SelectProjectTasks extends React.Component {
               </div> }
             
         { korak>=2 && <div className="select-project select-project-task3">
-                        <h3>Zadaci</h3>
+                        <h5>Zadaci</h5>
                         <select onChange={(event) => this.onChangeSelect(event, 2)}   value={values[2]}> 
                                 <FirstItem />
                                   {nodes[2].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
@@ -66,7 +66,7 @@ class SelectProjectTasks extends React.Component {
            </div> }
   
         { korak>=3 && <div className="select-project select-project-task4">
-                         <h3>Aktivnosti</h3>
+                         <h5>Aktivnosti</h5>
                             <select onChange={(event) => this.onChangeSelect(event, 3)}   value={values[3]}> 
                                     <FirstItem />
                                   {nodes[3].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
