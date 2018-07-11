@@ -21,13 +21,14 @@ class SelectProjectTasks extends React.Component {
         console.log("callback ", this.state)
     }
 
-    onChangeSelect = (event) => { 
+    onChangeSelect = (event, korak) => { 
         let value = event.target.value
         let values = [...this.state.values]
-        values[this.state.korak]=value;
+        values[korak]=value;
         for(let i=this.state.korak+1; i<4; i++) values[i]=0;
-        console.log(values)
-        let korak = this.state.korak;
+        
+        console.log(values, korak, value)
+        this.props.dataEntered(korak==3 && value!=0, values); //insertTime component must know if data is entered
         this.setState( {...this.state,values}, function() {
             tree.find(this.state.nodes[korak], value, this.cb, korak);
         } ); 
@@ -42,7 +43,7 @@ class SelectProjectTasks extends React.Component {
          <React.Fragment>
           { korak>=0 &&  <div className="select-project select-project-task1">
                              <h3>Programi</h3>
-                            <select onChange={this.onChangeSelect}   value={values[0]}> 
+                            <select onChange={(event) => this.onChangeSelect(event, 0)}   value={values[0]}> 
                                    <FirstItem />
                                   {nodes[0].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
                                 </select> 
@@ -50,7 +51,7 @@ class SelectProjectTasks extends React.Component {
             
         { korak>=1 && <div className="select-project select-project-task2">
                         <h3>Postupci</h3>
-                        <select onChange={this.onChangeSelect}   value={values[1]}> 
+                        <select onChange={(event) => this.onChangeSelect(event, 1)}   value={values[1]}> 
                                 <FirstItem />
                                   {nodes[1].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
                                 </select> 
@@ -58,7 +59,7 @@ class SelectProjectTasks extends React.Component {
             
         { korak>=2 && <div className="select-project select-project-task3">
                         <h3>Zadaci</h3>
-                        <select onChange={this.onChangeSelect}   value={values[2]}> 
+                        <select onChange={(event) => this.onChangeSelect(event, 2)}   value={values[2]}> 
                                 <FirstItem />
                                   {nodes[2].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
                                 </select> 
@@ -66,7 +67,7 @@ class SelectProjectTasks extends React.Component {
   
         { korak>=3 && <div className="select-project select-project-task4">
                          <h3>Aktivnosti</h3>
-                            <select onChange={this.onChangeSelect}   value={values[3]}> 
+                            <select onChange={(event) => this.onChangeSelect(event, 3)}   value={values[3]}> 
                                     <FirstItem />
                                   {nodes[3].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
                                 </select> 

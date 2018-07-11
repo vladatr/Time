@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom';
 
 class Header extends React.Component {
     
@@ -9,6 +9,8 @@ class Header extends React.Component {
         return(
             <section>
                 <h2>Merenje vremena</h2>
+                <Link to="/Vreme">Vremena </Link>
+                <Link to="/Projekti">Prijekti </Link>
             </section>
         )
     }

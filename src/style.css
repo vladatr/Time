@@ -29,11 +29,15 @@
  }
 
  .select-project {
-     padding: 15px;
+     padding: 10px;
      font-family: "Verdana"
  }
 
  .section-day-overview {
      margin-top: 25px;
      font-family: "Verdana"
+ }
+
+ input {
+     padding: 3px 10px;
  }
