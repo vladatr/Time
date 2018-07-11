@@ -12,16 +12,51 @@ export const dayList = (user, date) => {
 
 export const storeTime = (user, date, time, type, values) => {
     let options = {
-        method: 'POST',//method,
+        method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'X-Requested-With': 'XMLHttpRequest',
            //'Content-Type': 'application/json'//NOTE: this will send as 'Request payload'
         },
-        url: 'Service.aspx?savePersonalPages=true&saveType=pageList',
+        url: server + 'storeTime.php',
         data: {user, date, time, type, values}
      }
-    return axios.post(server + 'store.php')
+    return axios.post(options)
+    .then(res => {
+        debugger
+       return res
+    })
+}
+
+export const storeProject = (user, name) => {
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        url: server + 'storeProject.php',
+        data: {user, name}
+     }
+    return axios.post(options)
+    .then(res => {
+        debugger
+       return res
+    })
+}
+
+export const getProjects = (string) => {
+    //query string or all
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        url: server + 'getProjects.php',
+        data: {string}
+     }
+    return axios.post(options)
     .then(res => {
         debugger
        return res

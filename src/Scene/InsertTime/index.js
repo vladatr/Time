@@ -1,7 +1,7 @@
 import React from 'react'
 import Calendar from 'react-calendar';
 
-import {dayList, storeTime} from '../../api'
+import {dayList, storeTime, getProjects} from '../../api'
 import SelectProjectTasks from './components/SelectProjectTasks'
 import SelectProjectAdditional from './components/SelectProjectAdditional'
 import SelectOtherTasks from './components/SelectOtherTasks'
@@ -15,6 +15,8 @@ class InsertTime extends React.Component {
         registrations: [],
         dataEntered: false,
         values: [],
+        projects: [],
+        selectedProject: 0,
         h: 0,
         m: 0
     }
@@ -48,14 +50,19 @@ class InsertTime extends React.Component {
     }
 
     onChangeSelect = event => this.setState({...this.state, activityType: event.target.value, dataEntered: false})
-
+    onProjectChange  = event => this.setState({...this.state, selectedProject: event.target.value})
     timeChange = (params) => {
         debugger
         this.setState({...this.state, h: this.refs.h.value, m: this.refs.m.value})
     }
 
+    componentDidMount() {
+        console.log("get projects")
+        this.setState({...this.state, projects: [{id: 12, name:"project 1"},{id: 15, name:"project 2"}]})
+    }
+
     render() {
-        const {date, activityType, registrations, dataEntered, h, m } = this.state
+        const {date, activityType, registrations, dataEntered, h, m, projects, selectedProject } = this.state
         return(
             <React.Fragment>
                 <div className="left">
@@ -84,6 +91,14 @@ class InsertTime extends React.Component {
                         <option value="4">Vreme koje nije vezano za posao</option>
 
                     </select>
+                    {activityType>0 && <div> <h3>Izaberi projekat</h3>
+                                     <select onChange={onProjectChange} value={selectedProject}>
+                                        {projects && projects.length &&
+                                            projects.map(project => <div>{project.id} - {project.name}</div>)
+                                        }
+                                    </select>
+                                </div>
+                    }
                     {activityType==1 && <SelectProjectTasks dataEntered={this.dataEntered} /> }
                     {activityType==2 && <SelectProjectAdditional dataEntered={this.dataEntered} /> }
                     {activityType==3 && <SelectNonProjectActivities dataEntered={this.dataEntered}  /> }
