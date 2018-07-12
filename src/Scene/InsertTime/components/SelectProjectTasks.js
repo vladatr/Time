@@ -1,5 +1,5 @@
 import React from 'react'
-import tree from '../data/data'
+import tree from '../data/tree'
 
 class SelectProjectTasks extends React.Component {
     constructor(props) {

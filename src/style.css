@@ -45,3 +45,9 @@
  h5 {
      margin: 5px;
  }
+
+ .day-item {
+     padding: 3px;
+     border: silver 1px solid;
+     font-size: 0.8em;
+ }

@@ -6,6 +6,7 @@ import SelectProjectTasks from './components/SelectProjectTasks'
 import SelectProjectAdditional from './components/SelectProjectAdditional'
 import SelectOtherTasks from './components/SelectOtherTasks'
 import SelectNonProjectActivities from './components/SelectNonProjectActivities'
+import {getData} from '../InsertTime/data/data'
 
 class InsertTime extends React.Component {
 
@@ -33,7 +34,6 @@ class InsertTime extends React.Component {
     }
 
     onChangeDate = date => {
-        console.log("Get times for " + date)
         dayList("test", this.formatDateMySQL(date))
             .then( res => {
                 this.setState({...this.state, registrations:res.data,  activityType: 0, date, dataEntered: false }) 
@@ -48,7 +48,7 @@ class InsertTime extends React.Component {
         storeTime("test", selectedProject, this.formatDateMySQL(date), time, activityType,  values)
             .then( res => {
                 if(res == "ok") {
-                    this.setState({...this.state, activityType: 0, dataEntered: false, values: [] }, function() {
+                    this.setState({...this.state, activityType: 0, dataEntered: false, values: [], selectedProject: 0 }, function() {
                         this.onChangeDate(this.state.date)
                     }) 
                 } else {
@@ -67,7 +67,6 @@ class InsertTime extends React.Component {
     }
 
     componentDidMount() {
-        debugger
         getProjects("").then(res => this.setState({...this.state, projects: res}, function() {
             this.onChangeDate(this.state.date)
         }))
@@ -75,6 +74,9 @@ class InsertTime extends React.Component {
     }
 
     render() {
+        const treeData = JSON.parse(getData())
+        const a = ["", "Aktivnosti na predmetu", "Aktivnosti vezane za predmet", "Aktivnosti koje nisu vezane za predmet", "Vreme koje nije vezano za posao"]
+        console.log()
         const {date, activityType, registrations, dataEntered, h, m, projects, selectedProject } = this.state
         console.log("registrations", registrations)
         return(
@@ -87,11 +89,16 @@ class InsertTime extends React.Component {
                         />
                     </div>   
                     <div className="section-day-overview">
-                        <table width="300px">
-                            <tr> <th>Projekat</th> <th>Tip</th> <th>Sifra aktivnosti</th> <th>Trajanje</th></tr>
+                            
                          {registrations.length && 
-                                registrations.map( item => <tr><td>{item.name}</td><td> {item.tip} </td><td>{item.value4} </td><td>{item.duration} </td></tr> )}
-                        </table>
+                                registrations.map( item => <div className="day-item">
+                                                   <p> <b>{item.name}</b> / {a[item.tip]} </p>
+                                                 <div> {item.value4} {treeData.filter(treeitem => treeitem.id==item.value4)[0] &&
+                                                                 treeData.filter(treeitem => treeitem.id==item.value4)[0].name } 
+                                                     <b> {item.duration} min.</b> </div> 
+                                           </div>)
+                        }
+                        
                     </div>
                 </div>
 
@@ -105,7 +112,7 @@ class InsertTime extends React.Component {
                         <option value="4">Vreme koje nije vezano za posao</option>
 
                     </select>
-                    {activityType>0 && <div> <h5>Izaberi projekat</h5>
+                    {activityType>0 && activityType<3 && <div> <h5>Izaberi projekat</h5>
                                      <select onChange={this.onProjectChange} value={selectedProject}>
                                      <option value="0">--Izaberite stavku--</option>
                                         {projects && projects.length &&
