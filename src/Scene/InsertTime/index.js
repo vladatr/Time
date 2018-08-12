@@ -6,7 +6,7 @@ import SelectProjectTasks from './components/SelectProjectTasks'
 import SelectProjectAdditional from './components/SelectProjectAdditional'
 import SelectOtherTasks from './components/SelectOtherTasks'
 import SelectNonProjectActivities from './components/SelectNonProjectActivities'
-import {getData} from '../InsertTime/data/data'
+import {getData} from '../data/data'
 
 class InsertTime extends React.Component {
 
@@ -93,6 +93,16 @@ class InsertTime extends React.Component {
                          {registrations.length && 
                                 registrations.map( item => <div className="day-item">
                                                    <p> <b>{item.name}</b> / {a[item.tip]} </p>
+
+                                                   <div> {item.value1} {treeData.filter(treeitem => treeitem.id==item.value1)[0] &&
+                                                    treeData.filter(treeitem => treeitem.id==item.value1)[0].name } </div>
+
+                                                    <div> {item.value2} {treeData.filter(treeitem => treeitem.id==item.value2)[0] &&
+                                                    treeData.filter(treeitem => treeitem.id==item.value2)[0].name } </div>
+
+                                                    <div> {item.value3} {treeData.filter(treeitem => treeitem.id==item.value3)[0] &&
+                                                    treeData.filter(treeitem => treeitem.id==item.value3)[0].name } </div>
+                                                    
                                                  <div> {item.value4} {treeData.filter(treeitem => treeitem.id==item.value4)[0] &&
                                                                  treeData.filter(treeitem => treeitem.id==item.value4)[0].name } 
                                                      <b> {item.duration} min.</b> </div> 

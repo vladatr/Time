@@ -1,28 +1,18 @@
 import axios from 'axios'
 
-import {server} from './common'
+import {serverv2} from './common'
 
-export const dayList = (user, date) => {
-    return axios.get(server + 'getTimes.php?name='+user+'&date='+date)
-    .then(res => {
-       return res
-    })
-}
-
-export const storeTime = (user, project, date, time, type, values) => {
-   // console.log("test", selectedProject, this.formatDateMySQL(date), time, activityType,  values)
+export const getOpstine = () => {
+    //query string or all
     let options = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        url: server + 'storeTime.php',
-        data: {user, project, date, time, type, values}
+        url: serverv2 + 'getOpstine.php'
      }
     return axios(options)
     .then(res => {
-        debugger
-        console.log(res)
        return res.data
     })
     .catch(err => {
@@ -30,36 +20,39 @@ export const storeTime = (user, project, date, time, type, values) => {
     })
 }
 
-export const storeProject = (user, name) => {
-    let options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        url: server + 'storeProject.php',
-        data: {user, name}
-     }
-    return axios(options)
-    .then(res => {
-       return res
-    })
-    .catch(err => {
-        return err
-    })
-}
-
-export const getProjects = (string) => {
+export const getEducation = () => {
     //query string or all
     let options = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        url: server + 'getProjects.php',
-        data: {name: string}
+        url: serverv2 + 'getEducation.php'
      }
     return axios(options)
     .then(res => {
+        console.log("EDUCATIONS RES", res.data)
+       return res.data
+    })
+    .catch(err => {
+        return err
+    })
+}
+
+export const storeEducation = (education) => {
+    
+    //query string or all
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        url: serverv2 + 'storeEducation.php',
+        data: {education}
+     }
+    return axios(options)
+    .then(res => {
+        console.log("storeEducation RES", res)
        return res.data
     })
     .catch(err => {

@@ -1,6 +1,7 @@
 import React from 'react' 
 
 import {storeProject} from '../../api'
+import SelectProjectTasks from './components/SelectProjectTasks'
 
 class Projects extends React.Component{
 
@@ -33,6 +34,7 @@ class Projects extends React.Component{
                 <input type="text" size={30} onChange={this.nameChange} value={this.state.name} />
                 <div className="info">{this.state.info}</div>
                 {this.state.info.length==0 && <p><button className="button-save" onClick={this.onSave}>Sacuvaj</button></p> }
+                <SelectProjectTasks dataEntered={this.dataEntered} />
             </div>
         )
     }

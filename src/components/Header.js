@@ -12,6 +12,7 @@ class Header extends React.Component {
                 <ul>
                    <li> <Link to="/Vreme">Vremena </Link> </li>
                    <li>  <Link to="/Projekti">Projekti </Link> </li>
+                   <li>  <Link to="/Voditelji">Voditelji slučaja </Link> </li>
                 </ul>
             </section>
         )
