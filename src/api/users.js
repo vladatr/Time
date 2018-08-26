@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import {serverv2} from './common'
+import {server, serverv2} from './common'
 
 export const getOpstine = () => {
     //query string or all
@@ -27,7 +27,7 @@ export const getEducation = () => {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        url: serverv2 + 'getEducation.php'
+        url: server + 'getEducation.php'
      }
     return axios(options)
     .then(res => {
@@ -40,20 +40,36 @@ export const getEducation = () => {
 }
 
 export const storeEducation = (education) => {
-    
-    //query string or all
     let options = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        url: serverv2 + 'storeEducation.php',
+        url: server + 'storeEducation.php',
         data: {education}
      }
     return axios(options)
     .then(res => {
-        console.log("storeEducation RES", res)
        return res.data
+    })
+    .catch(err => {
+        return err
+    })
+}
+
+export const storeUser = ({ime, opstina, edu, staz,velicina_centra, username, password}) => {
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        url: server + "storeUser.php",
+        data : {ime, opstina, edu, staz,velicina_centra, username, password}
+    }
+    return axios(options)
+    .then(res => {
+        console.log("storeUser res ", res)
+        return res.data
     })
     .catch(err => {
         return err

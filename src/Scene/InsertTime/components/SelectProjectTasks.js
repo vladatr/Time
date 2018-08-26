@@ -72,7 +72,6 @@ class SelectProjectTasks extends React.Component {
                                     <FirstItem />
                                     {nodes[3].children.map(node => console.log("4. korak ",node.data.id))}
                                   {nodes[3].children
-                                    .filter(node => allowed.indexOf(node.data.id)>-1)
                                     .map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
                                 </select> 
                 </div> }
