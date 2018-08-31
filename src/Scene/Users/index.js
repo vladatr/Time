@@ -7,8 +7,9 @@ class Users extends React.Component {
 
         return(
             <React.Fragment>
-                <h2>Voditelji slučaja</h2>
-                <UserForm />
+                <h2>Dodavanje korisnika</h2>
+                {this.props.user.type==1 && <UserForm />}
+                {this.props.user.type!=1 && <h3>Samo administrator dodaje korisnike</h3>}
             </React.Fragment>
         )
     }

@@ -57,14 +57,14 @@ export const storeEducation = (education) => {
     })
 }
 
-export const storeUser = ({ime, opstina, edu, staz,velicina_centra, username, password}) => {
+export const storeUser = ({ime, opstina, edu, staz,velicina_centra, tip, username, password}) => {
     let options = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
         url: server + "storeUser.php",
-        data : {ime, opstina, edu, staz,velicina_centra, username, password}
+        data : {ime, opstina, edu, staz,velicina_centra, tip, username, password}
     }
     return axios(options)
     .then(res => {
@@ -74,4 +74,23 @@ export const storeUser = ({ime, opstina, edu, staz,velicina_centra, username, pa
     .catch(err => {
         return err
     })
+}
+
+export const checkUser = (username, password) => {
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        url: server + "checkUser.php",
+        data : {username, password}
+    }
+    return axios(options)
+    .then(res => {
+        console.log("checkUser res ", res)
+        return res.data
+    })
+    .catch(err => {
+        return err
+    })  
 }

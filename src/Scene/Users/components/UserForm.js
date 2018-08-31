@@ -30,11 +30,44 @@ debugger
     userSubmit(event){
         event.preventDefault();
         event.stopPropagation();
-        UserApi.storeUser({ime: "asd", opstina: this.refs.opstina.value, edu: this.refs.edu.value, staz: this.refs.staz.value,
-            velicina_centra: this.refs.velicina.value, username: this.refs.username.value, password: this.refs.password1.value} )
+        if(this.refs.ime.value.trim().length<6) {
+            alert("Ime i prezima - bar 6 znakova");
+            return
+        }
+        if(this.refs.username.value.trim().length<4) {
+            alert("Korisničko ime - bar 4 znaka");
+            return
+        }
+        if(this.refs.password1.value !== this.refs.password2.value) {
+            alert("Ne slažu se lozinke.");
+            return
+        }
+        if(this.refs.password1.value.length == 0) {
+            alert("Uneti lozinke");
+            return
+        }
+        if(this.refs.velicina.value == 0) {
+            alert("Izabrati veličinu centra");
+            return
+        }
+        if(this.refs.staz.value == 0 || this.refs.staz.value == "") {
+            alert("Uneti staž.");
+            return
+        }
+        if(isNaN(this.refs.staz.value)) {
+            alert("Uneti staž.");
+            return
+        }
+        UserApi.storeUser({ime: this.refs.ime.value, opstina: this.refs.opstina.value, edu: this.refs.edu.value, staz: this.refs.staz.value,
+            velicina_centra: this.refs.velicina.value, tip: this.refs.tip.value, username: this.refs.username.value, password: this.refs.password1.value} )
         .then( (res) => {
             if(res === "ok") {
-                alert("user stored");
+                alert("Sačuvan korisnik.");
+                this.refs.ime.value=""
+                this.refs.staz.value=""
+                this.refs.username.value=""
+                this.refs.password1.value=""
+                this.refs.password2.value=""
             } else {
                 alert(res);
             }
@@ -49,6 +82,11 @@ debugger
     render() {
         return(
             <form onSubmit={this.userSubmit}>
+                <div className="form-part">
+                <label for="ime">Ime</label>
+                    <input name="ime" ref="ime" autoComplete="off" /> 
+                </div>
+
                 <div className="form-part">
                 <label for="opstina">Opština</label>
                     <select ref="opstina">
@@ -73,7 +111,7 @@ debugger
 
                 <div className="form-part">
                 <label for="staz">Radni staž</label>
-                    <input name="staz" ref="staz" /> 
+                    <input name="staz" ref="staz" autoComplete="off" /> 
                 </div>
 
                 <h4>Podaci o Centru za socijalni rad</h4>
@@ -89,16 +127,23 @@ debugger
 
                  <h4>Logovanje</h4>
                  <div className="form-part">
+                <label for="tip">Tip korisnika</label>
+                    <select ref="tip">
+                        <option value={2}>Zaposleni</option>
+                        <option value={1}>Administrator</option>
+                    </select> 
+                </div>
+                 <div className="form-part">
                 <label for="username">Korisničko ime</label>
-                    <input name="username"  ref="username" /> 
+                    <input name="username"  ref="username" autoComplete="off" /> 
                 </div>
                 <div className="form-part">
                 <label for="password1">Loznika</label>
-                    <input name="password1" type="password" ref="password1" /> 
+                    <input name="password1" type="password" ref="password1" autoComplete="off" /> 
                 </div>
                 <div className="form-part">
                 <label for="password2">Loznika</label>
-                    <input name="password2" type="password" ref="password2" /> 
+                    <input name="password2" type="password" ref="password2" autoComplete="off" /> 
                 </div>
 
                 <div className="form-part">

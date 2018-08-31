@@ -1,7 +1,7 @@
 import React from 'react'
 import Calendar from 'react-calendar';
 
-import {dayList, storeTime, getProjects} from '../../api'
+import {dayList, storeTime, getProjects, deleteItem} from '../../api'
 import SelectProjectTasks from './components/SelectProjectTasks'
 import SelectProjectAdditional from './components/SelectProjectAdditional'
 import SelectOtherTasks from './components/SelectOtherTasks'
@@ -33,8 +33,17 @@ class InsertTime extends React.Component {
         return  date.getFullYear() + "-" + (date.getMonth() + 1) + "-" +date.getDate() 
     }
 
+    deleteItem = (id) => {
+        deleteItem(id)
+            .then( (res) => {
+                if(res=="ok") {
+                    this.onChangeDate(this.state.date)
+                }
+            })
+    }
+
     onChangeDate = date => {
-        dayList("test", this.formatDateMySQL(date))
+        dayList(this.props.user.username, this.formatDateMySQL(date))
             .then( res => {
                 this.setState({...this.state, registrations:res.data,  activityType: 0, date, dataEntered: false }) 
             })  
@@ -45,7 +54,7 @@ class InsertTime extends React.Component {
         const {date, h, m, activityType, selectedProject, values} = this.state
         const time=h*60+m*1
         console.log("Sacuvaj vreme za: test", this.formatDateMySQL(date), time, activityType, selectedProject, values)
-        storeTime("test", selectedProject, this.formatDateMySQL(date), time, activityType,  values)
+        storeTime(this.props.user.username, selectedProject, this.formatDateMySQL(date), time, activityType,  values)
             .then( res => {
                 if(res == "ok") {
                     this.setState({...this.state, activityType: 0, dataEntered: false, values: [], selectedProject: 0 }, function() {
@@ -67,7 +76,7 @@ class InsertTime extends React.Component {
     }
 
     componentDidMount() {
-        getProjects("").then(res => this.setState({...this.state, projects: res}, function() {
+        if(this.props.user.username) getProjects(this.props.user.username).then(res => this.setState({...this.state, projects: res}, function() {
             this.onChangeDate(this.state.date)
         }))
 
@@ -79,6 +88,8 @@ class InsertTime extends React.Component {
         console.log()
         const {date, activityType, registrations, dataEntered, h, m, projects, selectedProject } = this.state
         console.log("registrations", registrations)
+
+        const stil = {paddingLeft: "30px", cursor: "pointer", fontWeight: "bold", color: "red" }
         return(
             <React.Fragment>
                 <div className="left">
@@ -92,7 +103,7 @@ class InsertTime extends React.Component {
                             
                          {registrations.length && 
                                 registrations.map( item => <div className="day-item">
-                                                   <p> <b>{item.name}</b> / {a[item.tip]} </p>
+                                                   <p> <b>{item.name}</b> / {a[item.tip]} <span onClick={() => this.deleteItem(item.id)} style={stil}>X</span></p>
 
                                                    <div> {item.value1} {treeData.filter(treeitem => treeitem.id==item.value1)[0] &&
                                                     treeData.filter(treeitem => treeitem.id==item.value1)[0].name } </div>
@@ -116,7 +127,7 @@ class InsertTime extends React.Component {
                     <div className="naslov">{this.formatDate(date) }  - kako se utrosili vreme na poslu?</div>
                     <select value={activityType} onChange={this.onChangeSelect.bind(this)} >
                         <option value="0">--Izaberite stavku--</option>
-                        <option value="1"> Aktivnosti na predmetu</option>
+                        <option value="1"> Aktivnosti na projektu</option>
                         <option value="2">Aktivnosti vezane za predmet</option>
                         <option value="3">Aktivnosti koje nisu vezane za predmet</option>
                         <option value="4">Vreme koje nije vezano za posao</option>

@@ -67,13 +67,13 @@ class SelectProjectTasks extends React.Component {
            </div> }
   
         { korak>=3 && <div className="select-project select-project-task4">
-                         <h5>Obeleži dozvoljene aktivnosti za ovaj projekat</h5>
-                            <form > 
+                         <h5>Aktivnosti</h5>
+                            <select onChange={(event) => this.onChangeSelect(event, 3)}   value={values[3]}> 
                                     <FirstItem />
+                                    {nodes[3].children.map(node => console.log("4. korak ",node.data.id))}
                                   {nodes[3].children
-                                    .filter(node => allowed.indexOf(node.data.id)>-1)
-                                    .map( node =>  <p> <input type="checkbox" key={node.data.id}  value={node.data.id} />{node.data.name}   </p>   ) }
-                                </form> 
+                                    .map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
+                                </select> 
                 </div> }
          </React.Fragment>
         ) 
