@@ -20,7 +20,7 @@ export const deleteItem = (id) => {
 }
 
 
-export const storeProjectItems = (user, preostalo1, preostalo2, selectedProject, values) => {
+export const storeProjectItems = (user, preostalo1, preostalo2, selectedProject, value1, selected) => {
     debugger
      let options = {
          method: 'POST',
@@ -28,7 +28,7 @@ export const storeProjectItems = (user, preostalo1, preostalo2, selectedProject,
              'Content-Type': 'application/x-www-form-urlencoded',
          },
          url: server + 'storeProjectItems.php',
-         data: {user, preostalo1, preostalo2, selectedProject, values}
+         data: {user, preostalo1, preostalo2, selectedProject, value1, selected}
       }
      return axios(options)
      .then(res => {
@@ -43,6 +43,7 @@ export const storeProjectItems = (user, preostalo1, preostalo2, selectedProject,
  
 
 export const storeTime = (user, project, date, time, type, values) => {
+    debugger
    // console.log("test", selectedProject, this.formatDateMySQL(date), time, activityType,  values)
     let options = {
         method: 'POST',
@@ -63,14 +64,14 @@ export const storeTime = (user, project, date, time, type, values) => {
     })
 }
 
-export const storeProject = (user, name) => {
+export const storeProject = (user, name, brojKorisnika) => {
     let options = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
         url: server + 'storeProject.php',
-        data: {user, name}
+        data: {user, name, brojKorisnika}
      }
     return axios(options)
     .then(res => {
@@ -103,6 +104,27 @@ export const getProjects = (username) => {
     })
 }
 
+export const getPrograms = (project) => {
+    //query string or all
+    debugger
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        url: server + 'getPrograms.php',
+        data: {project}
+     }
+    return axios(options)
+    .then(res => {
+        debugger
+       return res.data
+    })
+    .catch(err => {
+        debugger
+        return err
+    })
+}
 
 export const getData = (projectID) => {
     //query string or all

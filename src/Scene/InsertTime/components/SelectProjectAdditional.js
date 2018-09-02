@@ -8,16 +8,14 @@ class SelectProjectAdditional extends React.Component {
     onChangeSelect = (event) => { 
         debugger
         const value = event.target.value
-        let result=[]
-        result.push(value)
         this.setState({value}) 
-        this.props.dataEntered(value!=0, result);
+        this.props.dataEntered(value!=0, value, 4);
     }
 
     render() {
         return(
                 <div className="select-project">
-                     <h3>Aktivnosti vezane za predmet</h3>
+                     <h3>Aktivnosti vezane za dosije</h3>
                     <select onChange={this.onChangeSelect}   value={this.state.value}> 
                         <option  value={0}>-- Izberi stavku --</option> 
                         <option  value={1}>sastanci oko predmeta </option> 

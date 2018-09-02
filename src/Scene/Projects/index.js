@@ -1,17 +1,17 @@
 import React from 'react' 
 
-import {storeProject, storeProjectItems, getProjects} from '../../api'
+import {storeProject,  getProjects} from '../../api'
 import SelectProjectTasks from './components/SelectProjectTasks'
 
 class Projects extends React.Component{
 
     state = {
         name: "" ,
+        brojKorisnika: 0 ,
         info: "",
-        dataEntered: false,
+        //dataEntered: false,
         values: [],
-        preostalo1: 100,
-        preostalo2: 0,
+
         selectedProject: 0,
         projects: []
     }
@@ -21,11 +21,11 @@ class Projects extends React.Component{
     }
 
     onProjectChange  = event => this.setState({...this.state, selectedProject: event.target.value})
-
+/*
     dataEntered = (dataEntered, values) => {
         this.setState({...this.state, dataEntered, values})
     }
-
+*/
     nameChange = (event) => {
         this.setState({...this.state, name: event.target.value})
     }
@@ -34,46 +34,40 @@ class Projects extends React.Component{
         if(this.state.name.length>1) {
             console.log("Save project " + this.state.name )
 
-            storeProject(this.props.user.username, this.state.name)
+            storeProject(this.props.user.username, this.state.name, this.state.brojKorisnika)
                 .then( res => {
-                    this.setState({...this.state, info: res.data})
+                    this.setState({...this.state, info: res.data, name:"", brojKorisnika: 0})
+                    getProjects(this.props.user.username).then(res => this.setState({...this.state, projects: res}))
                 })
                 .catch( err => this.setState({...this.state, info: err}))
+        } else {
+            alert("Naziv dosijea treba da ima više od jednog znaka");
         }
     }
 
-    onSaveProjectItems = () => {
-        //storeTime = (user, date, time, type, values, h, m)
-        const { preostalo1, preostalo2, selectedProject, values} = this.state
-     
-        storeProjectItems("user",  preostalo1, preostalo2, selectedProject, values)
-            .then( res => {
-                if(res == "ok") {
-                    this.setState({...this.state,  dataEntered: false, values: []}) 
-                } else {
-                    alert("Greska")
-                }
-
-            })
-    }
-
+   
     percentChange = () => {
         this.setState({...this.state, preostalo1: this.refs.preostalo1.value, preostalo2: this.refs.preostalo2.value})
     }
 
+    brojKorisnikaChange = () => {
+        this.setState({...this.state, brojKorisnika: this.refs.brojKorisnika.value})
+    }
+
     render() {
-        const {preostalo1, preostalo2, dataEntered, selectedProject, projects} = this.state
+        const { selectedProject, projects} = this.state
         return(
             <div className="project-page">
-                <h3>Dodaj novi projekat</h3>
+                <h3>Dodaj novi dosije</h3>
                 <p>Naziv </p>
-                <input type="text" size={30} onChange={this.nameChange} value={this.state.name} />
+                <input type="text" size={30} onChange={this.nameChange} value={this.state.name} /> <br />
+                Broj korisnika <input type="text" size={4} onChange={this.brojKorisnikaChange}  value={this.state.brojKorisnika} ref="brojKorisnika" />
                 <div className="info">{this.state.info}</div>
                 {this.state.info.length==0 && <p><button className="button-save" onClick={this.onSave}>Sacuvaj</button></p> }
 
 
-                <h3>Izaberi stavke projekta</h3>
-                <div> <h5>Izaberi projekat</h5>
+                <h3>Programi i postupci</h3>
+                <div> <h5>Izaberi dosije</h5>
                                      <select onChange={this.onProjectChange} value={selectedProject}>
                                      <option value="0">--Izaberite stavku--</option>
                                         {projects && projects.length &&
@@ -82,14 +76,8 @@ class Projects extends React.Component{
                                     </select>
                                 </div>
 
-                { selectedProject>0 &&  <SelectProjectTasks dataEntered={this.dataEntered} /> }
-                {dataEntered && <div className="percent-form">
-                                        <span>Procena preostalog vremen na početku </span>
-                                        <input ref="preostalo1" type="text" value={preostalo1} onChange={this.percentChange} size={4} />% <br />
-                                        <span>Procena preostalog vremen na kraju </span>
-                                        <input ref="preostalo2" type="text" value={preostalo2} onChange={this.percentChange} size={4} />% 
-                                        <p><button className="button-save" onClick={this.onSaveProjectItems}>Sacuvaj</button></p>
-                                    </div>
+                { selectedProject>0 &&  <SelectProjectTasks selectedProject={selectedProject} user={this.props.user} /> }
+
                     }
             </div>
         )

@@ -18,8 +18,8 @@ class Header extends React.Component {
                  <div style={{clear: "both"}}>
                     <ul>
                     <li> <Link to="/Vreme">Vremena </Link> </li>
-                    <li>  <Link to="/Projekti">Projekti </Link> </li>
-                    <li>  <Link to="/Korisnici">Korisnici </Link> </li>
+                    <li>  <Link to="/Dosije">Dosije </Link> </li>
+                    <li>  <Link to="/Voditelji_slucaja">Voditelji </Link> </li>
                     <li>  <Link to="/Pregled">Pregled </Link> </li>
                     </ul>
                 </div>

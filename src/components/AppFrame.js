@@ -17,8 +17,8 @@ const AppFrame = (props) => {
         <Switch>
           <Route exact path="/" component={() => <InsertTime user={props.user} />}  />
           <Route path="/Vreme" component={() => <InsertTime user={props.user} />}  />
-          <Route path="/Projekti" component={() => <Projects user={props.user} />}  />
-          <Route path="/Korisnici" component={() => <Users user={props.user} />}  />
+          <Route path="/Dosije" component={() => <Projects user={props.user} />}  />
+          <Route path="/Voditelji_slucaja" component={() => <Users user={props.user} />}  />
           <Route path="/Pregled" component={() => <View user={props.user} />}  />
 
           <Route component={<div>404</div>}/>

@@ -28,8 +28,8 @@ class View extends React.Component {
         const {projects, selectedProject} = this.state
         return(
             <React.Fragment>
-                <h2>Pregled podataka po projektu</h2>
-                <div> <h5>Izaberi projekat</h5>
+                <h2>Pregled podataka po dosijeu</h2>
+                <div> <h5>Izaberi dosije</h5>
                 <select onChange={this.onProjectChange} value={selectedProject}>
                 <option value="0">--Izaberite stavku--</option>
                 {projects && projects.length &&

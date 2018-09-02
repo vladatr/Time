@@ -8,10 +8,8 @@ class SelectOtherTasks extends React.Component {
     onChangeSelect = (event) => { 
         debugger
         const value = event.target.value
-        let result=[]
-        result.push(value)
         this.setState({value}) 
-        this.props.dataEntered(value!=0, result);
+        this.props.dataEntered(value!=0, value, 4);
     }
 
     render() {
