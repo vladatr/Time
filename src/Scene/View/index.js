@@ -33,7 +33,7 @@ class View extends React.Component {
                 <select onChange={this.onProjectChange} value={selectedProject}>
                 <option value="0">--Izaberite stavku--</option>
                 {projects && projects.length &&
-                    projects.map(project => <option value={project.id}>{project.id} - {project.name}</option>)
+                    projects.map(project => <option key={"kp" + project.id} value={project.id}>{project.id} - {project.name}</option>)
                 }
             </select>
             <DataTable data={this.state.data} />

@@ -20,6 +20,11 @@ class SelectProjectTasks extends React.Component {
         nodes: [tree._root, null, null, null]
     }
 
+       
+    percentChange = () => {
+        this.setState({...this.state, preostalo1: this.refs.preostalo1.value, preostalo2: this.refs.preostalo2.value})
+    }
+
     cb = (node, korak) => {
         let temp = [...this.state.nodes]
         temp[korak+1] = node

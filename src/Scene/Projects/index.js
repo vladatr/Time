@@ -45,10 +45,7 @@ class Projects extends React.Component{
         }
     }
 
-   
-    percentChange = () => {
-        this.setState({...this.state, preostalo1: this.refs.preostalo1.value, preostalo2: this.refs.preostalo2.value})
-    }
+
 
     brojKorisnikaChange = () => {
         this.setState({...this.state, brojKorisnika: this.refs.brojKorisnika.value})
@@ -78,7 +75,7 @@ class Projects extends React.Component{
 
                 { selectedProject>0 &&  <SelectProjectTasks selectedProject={selectedProject} user={this.props.user} /> }
 
-                    }
+                    
             </div>
         )
     }

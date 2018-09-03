@@ -162,11 +162,11 @@ class InsertTime extends React.Component {
                 <div className="select-project right">
                     <div className="naslov">{this.formatDate(date) }  - kako se utrošili vreme na poslu?</div>
                     <select value={activityType} onChange={this.onChangeSelect.bind(this)} >
-                        <option value="0">--Izaberite stavku--</option>
-                        <option value="1"> Aktivnosti na dosijeu</option>
-                        <option value="2">Aktivnosti vezane za dosije</option>
-                        <option value="3">Aktivnosti koje nisu vezane za dosije</option>
-                        <option value="4">Vreme koje nije vezano za posao</option>
+                        <option key="kt0" value="0">--Izaberite stavku--</option>
+                        <option key="kt1" value="1"> Aktivnosti na dosijeu</option>
+                        <option key="kt2" value="2">Aktivnosti vezane za dosije</option>
+                        <option key="kt3" value="3">Aktivnosti koje nisu vezane za dosije</option>
+                        <option key="kt4" value="4">Vreme koje nije vezano za posao</option>
 
                     </select>
                     {activityType>0 && activityType<3 && <div> <h5>Izaberi dosije</h5>
