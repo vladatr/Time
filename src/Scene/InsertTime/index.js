@@ -1,7 +1,7 @@
 import React from 'react'
 import Calendar from 'react-calendar';
 
-import {dayList, storeTime, getProjects, getPrograms, deleteItem} from '../../api'
+import {dayList, storeTime, getProjects, getPrograms, getProjectItems, deleteItem} from '../../api'
 import SelectProjectTasks from './components/SelectProjectTasks'
 import SelectProjectAdditional from './components/SelectProjectAdditional'
 import SelectOtherTasks from './components/SelectOtherTasks'
@@ -9,7 +9,7 @@ import SelectNonProjectActivities from './components/SelectNonProjectActivities'
 import {getData} from '../data/data'
 
 class InsertTime extends React.Component {
-
+    treeData = JSON.parse(getData())
     state = {
         date: new Date(),
         activityType: 0,
@@ -18,6 +18,7 @@ class InsertTime extends React.Component {
         values: [],
         projects: [],
         programs: [],
+        postupci: [],
         selectedProgram: 0,
         selectedProject: 0,
         h: 0,
@@ -94,7 +95,14 @@ class InsertTime extends React.Component {
         this.setState({...this.state, selectedProject: event.target.value, programs: []})
         getPrograms(event.target.value)
             .then( res => {
+                console.log("getPrograms ", res)
                 this.setState({...this.state, programs: res})
+            })
+            debugger
+            getProjectItems(this.props.user.username, event.target.value, 0)
+            .then( res => {
+                console.log("postupci ", res)
+                this.setState({...this.state, postupci: res})
             })
     }
 
@@ -102,6 +110,7 @@ class InsertTime extends React.Component {
         let values = [...this.state.values]
         values[0] = event.target.value
         this.setState({...this.state, values, selectedProgram: event.target.value  })
+
     }
 
     timeChange = () => {
@@ -115,11 +124,14 @@ class InsertTime extends React.Component {
 
     }
 
+    
+
     render() {
-        const treeData = JSON.parse(getData())
+        const treeData = this.treeData
         const a = ["", "Aktivnosti na dosijeu", "Aktivnosti vezane za dosije", "Aktivnosti koje nisu vezane za dosije", "Vreme koje nije vezano za posao"]
         console.log()
-        const {date, activityType, registrations, dataEntered, h, m, projects, selectedProject, sumDuration, selectedProgram, programs } = this.state
+        const {date, activityType, registrations, dataEntered, h, m, projects,
+                 selectedProject, sumDuration, selectedProgram, programs, postupci } = this.state
         console.log("registrations", registrations)
 
         const stil = {paddingLeft: "30px", cursor: "pointer", fontWeight: "bold", color: "red" }
@@ -187,7 +199,8 @@ class InsertTime extends React.Component {
                                     </select>
                                 </div>
                     }
-                    {activityType==1 && <SelectProjectTasks dataEntered={this.dataEntered} /> }
+                    {activityType==1 && <SelectProjectTasks dataEntered={this.dataEntered}
+                            programs={programs} selectedProject={selectedProject} postupci={postupci.data} /> }
                     {activityType==2 && <SelectProjectAdditional dataEntered={this.dataEntered} /> }
                     {activityType==3 && <SelectNonProjectActivities dataEntered={this.dataEntered}  /> }
                     {activityType==4 && <SelectOtherTasks dataEntered={this.dataEntered}  /> }

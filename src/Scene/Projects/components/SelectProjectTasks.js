@@ -2,7 +2,7 @@ import React from 'react'
 import tree from '../../data/tree'
 
 
-import {storeProjectItems} from '../../../api'
+import {storeProjectItems, getProjectItems} from '../../../api'
 
 class SelectProjectTasks extends React.Component {
     constructor(props) {
@@ -16,6 +16,8 @@ class SelectProjectTasks extends React.Component {
         value1: 0,
         value2: [],
         preostalo1: 100,
+        programs: [],
+        projectItems: [],
         preostalo2: 0,
         nodes: [tree._root, null, null, null]
     }
@@ -36,9 +38,19 @@ class SelectProjectTasks extends React.Component {
         debugger
         const value = event.target.value
 
-        this.setState( {...this.state,value1: value}, function() {
-            tree.find(this.state.nodes[0], value, this.cb, 0); //korak je 1
-        } ); 
+        getProjectItems(this.props.user.username, this.props.selectedProject, value)
+            .then( res => {
+                debugger
+                this.setState( {...this.state,value1: value, projectItems: res.data}, function() {
+                    tree.find(this.state.nodes[0], value, this.cb, 0); //korak je 1
+                } ); 
+                if(res.data[0]) {
+                    this.setState({...this.state, preostalo1: res.data[0].preostalo1, preostalo2: res.data[0].preostalo2 })
+                } else {
+                    this.setState({...this.state, preostalo1: 100, preostalo2: 0 })
+                }
+            })
+
      }
 
      onSaveProjectItems = () => {
@@ -53,16 +65,16 @@ class SelectProjectTasks extends React.Component {
         })
         let selected = cbitems.filter(cb => cb && cb.checked);
         if(selected.length==0) {alert("Izabrati stavke"); return;}
-        debugger
         selected = selected.map(cb => cb.id);
         
-
         storeProjectItems(this.props.user.username,  preostalo1, preostalo2, this.props.selectedProject, value1, selected)
             .then( res => {
                 if(res == "ok") {
                     debugger;
-                    this.setState({...this.state,   value1:0, value2: [], info: "Program je unet. Unesite sledeći program za izabrani dosije", korak: 0}) 
+                    this.props.addProgram(this.state.nodes[1].data.id);
+                    this.setState({...this.state, value1:0, value2: [], info: "Program je unet. Unesite sledeći program za izabrani dosije", korak: 0}) 
                     const that = this;
+
                     setTimeout(function() {debugger; that.setState({...this.state, info: ""})}, 3000);
                 } else {
                     alert("Greska")
@@ -74,8 +86,8 @@ class SelectProjectTasks extends React.Component {
 
     
     render() {
-        const {korak, nodes, value1, value2, preostalo1, preostalo2, info} = this.state
-    debugger
+        const {korak, nodes, value1, value2, preostalo1, preostalo2, info, projectItems} = this.state
+        const {programs} = this.props
         return(
          <React.Fragment>
             {info && <h4>{info}</h4>}
@@ -83,13 +95,26 @@ class SelectProjectTasks extends React.Component {
                              <h5>Programi</h5>
                             <select onChange={(event) => this.onChangeSelect(event, 0)}   value={value1}> 
                                    <FirstItem />
-                                  {nodes[0].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
+                                  {nodes[0].children.map( node =>  {
+                                      const other = programs.filter(x => x.value1 == node.data.id)
+                                      let sufix=""
+                                      if(other.length>0) { sufix = " ***" }
+                                          return(
+                                            <option key={node.data.id}  value={node.data.id}>{node.data.id + " " + node.data.name + sufix} </option>   
+                                          )
+                                                             
+                                  }
+                                  ) }
                                 </select> 
             </div> }
             
         { korak==1 && <div className="select-project select-project-task2">
                         <h5>Postupci</h5>
-                        {nodes[1].children.map( (node, index) =>  <div><input type="checkbox" ref={"value2"+index} key={node.data.id} id={node.data.id}  />{node.data.name}</div>) }
+                        {nodes[1].children.map( (node, index) =>  <div><input type="checkbox" ref={"value2"+index}
+                                     key={node.data.id} id={node.data.id} 
+                                     defaultChecked={projectItems.filter(x => x.value2 == node.data.id).length>0} />
+                                     {node.data.name}
+                                     </div>) }
               </div> }
 
                               {korak>=1 && <div className="percent-form">

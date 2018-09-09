@@ -41,6 +41,26 @@ export const storeProjectItems = (user, preostalo1, preostalo2, selectedProject,
      })
  }
  
+ export const getProjectItems = (user, selectedProject, value1) => {
+    debugger
+     let options = {
+         method: 'POST',
+         headers: {
+             'Content-Type': 'application/x-www-form-urlencoded',
+         },
+         url: server + 'getProjectItems.php',
+         data: {user, selectedProject, value1}
+      }
+     return axios(options)
+     .then(res => {
+         debugger
+         console.log(res)
+        return res.data
+     })
+     .catch(err => {
+         return err
+     })
+ }
 
 export const storeTime = (user, project, date, time, type, values) => {
     debugger

@@ -34,27 +34,56 @@ class SelectProjectTasks extends React.Component {
             tree.find(this.state.nodes[korak], value, this.cb, korak);
         } ); 
      }
-
     
     render() {
+        
+        const {korak, nodes, values, info} = this.state
+        const {programs, postupci} = this.props
         debugger
-        const {korak, nodes, values} = this.state
-    
         return(
          <React.Fragment>
           { korak>=0 &&  <div className="select-project select-project-task1">
                              <h5>Programi</h5>
                             <select onChange={(event) => this.onChangeSelect(event, 0)}   value={values[0]}> 
                                    <FirstItem />
-                                  {nodes[0].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
-                                </select> 
+                                  {nodes[0].children.map( node =>  {
+                                      const exists = programs.filter(x => x.value1 == node.data.id)
+                                      if(exists.length>0) {
+                                          return(
+                                            <option key={node.data.id}  
+                                                value={node.data.id}>{node.data.name} 
+                                            </option>
+                                          )
+                                      } 
+
+                                     }
+                                 ) }
+                                </select>
+                {this.props.selectedProject>0 && programs.length==0 && <p>U meniju <b>Dosije</b> izaberite programe</p> } 
             </div> }
             
         { korak>=1 && <div className="select-project select-project-task2">
                         <h5>Postupci</h5>
                         <select onChange={(event) => this.onChangeSelect(event, 1)}   value={values[1]}> 
                                 <FirstItem />
-                                  {nodes[1].children.map( node =>  <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>   ) }
+                                  {nodes[1].children.map( node =>  {
+                                             const other = postupci.filter(x => x.value2 == node.data.id)
+                                             let sufix=""
+                                             if(other.length>0) { sufix = " ***" }
+                                                 return(
+                                                   <option key={node.data.id}  value={node.data.id}>{node.data.id + " " + node.data.name + sufix} </option>   
+                                                 )
+/*
+show only selected
+const exists = postupci.filter(x => x.value2 == node.data.id)
+if(exists.length>0) {
+    return (
+    <option key={node.data.id}  value={node.data.id}>{node.data.name} </option>    
+    )
+}
+*/
+                                    })
+                                  }
                                 </select> 
               </div> }
             

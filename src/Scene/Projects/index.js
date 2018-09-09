@@ -1,9 +1,12 @@
 import React from 'react' 
 
-import {storeProject,  getProjects} from '../../api'
+import {storeProject,  getProjects, getPrograms} from '../../api'
 import SelectProjectTasks from './components/SelectProjectTasks'
+import {getData} from '../data/data'
 
 class Projects extends React.Component{
+
+    treeData = JSON.parse(getData())
 
     state = {
         name: "" ,
@@ -11,7 +14,7 @@ class Projects extends React.Component{
         info: "",
         //dataEntered: false,
         values: [],
-
+        programs: [],
         selectedProject: 0,
         projects: []
     }
@@ -19,13 +22,17 @@ class Projects extends React.Component{
     componentDidMount() {
         getProjects(this.props.user.username).then(res => this.setState({...this.state, projects: res}))
     }
-
-    onProjectChange  = event => this.setState({...this.state, selectedProject: event.target.value})
 /*
-    dataEntered = (dataEntered, values) => {
-        this.setState({...this.state, dataEntered, values})
-    }
+    onProjectChange  = event => this.setState({...this.state, selectedProject: event.target.value})
 */
+    onProjectChange  = event => {
+        debugger
+        this.setState({...this.state, selectedProject: event.target.value, programs: []})
+        getPrograms(event.target.value)
+            .then( res => {
+                this.setState({...this.state, programs: res})
+            })
+    }
     nameChange = (event) => {
         this.setState({...this.state, name: event.target.value})
     }
@@ -38,6 +45,8 @@ class Projects extends React.Component{
                 .then( res => {
                     this.setState({...this.state, info: res.data, name:"", brojKorisnika: 0})
                     getProjects(this.props.user.username).then(res => this.setState({...this.state, projects: res}))
+                    const that = this
+                    setTimeout(function() {that.setState({...this.state, info: ""}) }, 2000)
                 })
                 .catch( err => this.setState({...this.state, info: err}))
         } else {
@@ -45,14 +54,18 @@ class Projects extends React.Component{
         }
     }
 
-
+    addProgram(id) {
+        let programs = [...this.state.programs]
+        programs.push({value1: id})
+        this.setState({...this.state, programs})
+    }
 
     brojKorisnikaChange = () => {
         this.setState({...this.state, brojKorisnika: this.refs.brojKorisnika.value})
     }
 
     render() {
-        const { selectedProject, projects} = this.state
+        const { selectedProject, projects, programs} = this.state
         return(
             <div className="project-page">
                 <h3>Dodaj novi dosije</h3>
@@ -60,7 +73,7 @@ class Projects extends React.Component{
                 <input type="text" size={30} onChange={this.nameChange} value={this.state.name} /> <br />
                 Broj korisnika <input type="text" size={4} onChange={this.brojKorisnikaChange}  value={this.state.brojKorisnika} ref="brojKorisnika" />
                 <div className="info">{this.state.info}</div>
-                {this.state.info.length==0 && <p><button className="button-save" onClick={this.onSave}>Sacuvaj</button></p> }
+                {this.state.info.length==0 && <p><button className="button-save" onClick={this.onSave}>Sačuvaj</button></p> }
 
 
                 <h3>Programi i postupci</h3>
@@ -72,8 +85,12 @@ class Projects extends React.Component{
                                         }
                                     </select>
                                 </div>
-
-                { selectedProject>0 &&  <SelectProjectTasks selectedProject={selectedProject} user={this.props.user} /> }
+                                
+                { // selectedProject>0 && programs.length>0 && 
+                   // programs.map(p => <p>{p.value1 + " - " + this.treeData.filter(treeitem => treeitem.id==p.value1)[0].name}</p>)
+                }
+                { selectedProject>0 &&  <SelectProjectTasks selectedProject={selectedProject} user={this.props.user}
+                             programs={programs} addProgram={this.addProgram.bind(this)}  /> }
 
                     
             </div>
