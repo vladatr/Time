@@ -20,6 +20,44 @@ export const getOpstine = () => {
     })
 }
 
+export const getUsers = (admin) => {
+    //query users per admin
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        url: server + 'getUsers.php',
+        data: {admin}
+     }
+    return axios(options)
+    .then(res => {
+       return res.data
+    })
+    .catch(err => {
+        return err
+    })
+}
+
+export const getUsersCountProjects = (admin) => {
+    //query users per admin
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        url: server + 'getUsersCountProjects.php',
+        data: {admin}
+     }
+    return axios(options)
+    .then(res => {
+       return res.data
+    })
+    .catch(err => {
+        return err
+    })
+}
+
 export const getEducation = () => {
     //query string or all
     let options = {
@@ -57,14 +95,14 @@ export const storeEducation = (education) => {
     })
 }
 
-export const storeUser = ({ime, opstina, edu, staz,velicina_centra, tip, username, password}) => {
+export const storeUser = ({admin, ime, opstina, edu, staz,velicina_centra, tip, username, password}) => {
     let options = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
         url: server + "storeUser.php",
-        data : {ime, opstina, edu, staz,velicina_centra, tip, username, password}
+        data : {admin, ime, opstina, edu, staz,velicina_centra, tip, username, password}
     }
     return axios(options)
     .then(res => {

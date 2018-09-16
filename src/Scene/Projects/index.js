@@ -16,7 +16,8 @@ class Projects extends React.Component{
         values: [],
         programs: [],
         selectedProject: 0,
-        projects: []
+        projects: [],
+        cursor: "pointer"
     }
     
     componentDidMount() {
@@ -39,16 +40,15 @@ class Projects extends React.Component{
 
     onSave = () => {
         if(this.state.name.length>1) {
-            console.log("Save project " + this.state.name )
-
+            this.setState({...this.state, cursor: "not-allowed"})
             storeProject(this.props.user.username, this.state.name, this.state.brojKorisnika)
                 .then( res => {
-                    this.setState({...this.state, info: res.data, name:"", brojKorisnika: 0})
+                    this.setState({...this.state, info: res.data, name:"", brojKorisnika: 0, cursor: "pointer"})
                     getProjects(this.props.user.username).then(res => this.setState({...this.state, projects: res}))
                     const that = this
                     setTimeout(function() {that.setState({...this.state, info: ""}) }, 2000)
                 })
-                .catch( err => this.setState({...this.state, info: err}))
+                .catch( err => this.setState({...this.state, info: err, saveEnabled: "pointer"}))
         } else {
             alert("Naziv dosijea treba da ima više od jednog znaka");
         }
@@ -65,7 +65,7 @@ class Projects extends React.Component{
     }
 
     render() {
-        const { selectedProject, projects, programs} = this.state
+        const { selectedProject, projects, programs, cursor} = this.state
         return(
             <div className="project-page">
                 <h3>Dodaj novi dosije</h3>
@@ -73,7 +73,8 @@ class Projects extends React.Component{
                 <input type="text" size={30} onChange={this.nameChange} value={this.state.name} /> <br />
                 Broj korisnika <input type="text" size={4} onChange={this.brojKorisnikaChange}  value={this.state.brojKorisnika} ref="brojKorisnika" />
                 <div className="info">{this.state.info}</div>
-                {this.state.info.length==0 && <p><button className="button-save" onClick={this.onSave}>Sačuvaj</button></p> }
+                {this.state.info.length==0 && 
+                    <p><button className="button-save" style={{cursor: cursor}} onClick={this.onSave}>Sačuvaj</button></p> }
 
 
                 <h3>Programi i postupci</h3>
@@ -81,7 +82,7 @@ class Projects extends React.Component{
                                      <select onChange={this.onProjectChange} value={selectedProject}>
                                      <option value="0">--Izaberite stavku--</option>
                                         {projects && projects.length &&
-                                            projects.map(project => <option value={project.id}>{project.id} - {project.name}</option>)
+                                            projects.map(project => <option key={project.id} value={project.id}>{project.id} - {project.name}</option>)
                                         }
                                     </select>
                                 </div>

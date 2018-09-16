@@ -102,6 +102,28 @@ export const storeProject = (user, name, brojKorisnika) => {
     })
 }
 
+export const getProjectsForAdmin = (admin) => {
+    //query string or all
+    debugger
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        url: server + 'getProjectsForAdmin.php',
+        data: {admin}
+     }
+    return axios(options)
+    .then(res => {
+        debugger
+       return res.data
+    })
+    .catch(err => {
+        debugger
+        return err
+    })
+}
+
 export const getProjects = (username) => {
     //query string or all
     debugger
@@ -166,4 +188,24 @@ export const getData = (projectID) => {
         debugger
         return err
     })
+}
+
+export const getFilteredProjects = (admin, searchText) => {
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        url: server + 'getFilteredProjects.php',
+        data: {admin, searchText}
+     }
+    return axios(options)
+    .then(res => {
+        debugger
+       return res.data
+    })
+    .catch(err => {
+        debugger
+        return err
+    })  
 }

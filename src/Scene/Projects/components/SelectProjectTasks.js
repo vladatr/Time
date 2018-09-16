@@ -64,7 +64,7 @@ class SelectProjectTasks extends React.Component {
             if(this.refs[r].type=="checkbox") return this.refs[r];
         })
         let selected = cbitems.filter(cb => cb && cb.checked);
-        if(selected.length==0) {alert("Izabrati stavke"); return;}
+      //  if(selected.length==0) {alert("Izabrati stavke"); return;}
         selected = selected.map(cb => cb.id);
         
         storeProjectItems(this.props.user.username,  preostalo1, preostalo2, this.props.selectedProject, value1, selected)

@@ -21,6 +21,7 @@ class App extends React.Component {
     logOut = () => {
         localStorage.clear();
         this.setState({...this.state, user: undefined});
+        window.location.href = "/time2/"
     }
 
     componentDidMount() {

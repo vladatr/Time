@@ -5,8 +5,7 @@ import * as UserApi from '../../../api/users'
 class UserForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {opstine: [], educations: [], addEducation: 0};
-debugger
+        this.state = {opstine: [], userList: [], users: [], educations: [], addEducation: 0};
         this.userSubmit = this.userSubmit.bind(this);
       }
 
@@ -14,6 +13,12 @@ debugger
         
         UserApi.getOpstine().then((opstine) => this.setState({...this.state, opstine}) )
         UserApi.getEducation().then((educations) => this.setState({...this.state, educations}) )
+        UserApi.getUsers(this.props.user.username).then((users) => {
+            debugger
+            let userList = []
+            users.map(user => userList.push({id: user.id, value1: user.username + ' '+ user.type==1 ? "A" : "VS"} ))
+            debugger; this.setState({...this.state, userList, users}) 
+        } )
     }
 
     addEducation = () => {
@@ -58,7 +63,8 @@ debugger
             alert("Uneti staž.");
             return
         }
-        UserApi.storeUser({ime: this.refs.ime.value, opstina: this.refs.opstina.value, edu: this.refs.edu.value, staz: this.refs.staz.value,
+        debugger
+        UserApi.storeUser({admin: this.props.user.username, ime: this.refs.ime.value, opstina: this.refs.opstina.value, edu: this.refs.edu.value, staz: this.refs.staz.value,
             velicina_centra: this.refs.velicina.value, tip: this.refs.tip.value, username: this.refs.username.value, password: this.refs.password1.value} )
         .then( (res) => {
             if(res === "ok") {
@@ -83,19 +89,19 @@ debugger
         return(
             <form onSubmit={this.userSubmit}>
                 <div className="form-part">
-                <label for="ime">Ime</label>
+                <label for="ime">Ime i prezime </label>
                     <input name="ime" ref="ime" autoComplete="off" /> 
                 </div>
 
                 <div className="form-part">
-                <label for="opstina">Opština</label>
+                <label for="opstina">Opština </label>
                     <select ref="opstina">
                         {this.state.opstine.length>0 && <Options list={this.state.opstine}/>}
                     </select> 
                 </div>
 
                 <div className="form-part">
-                <label for="obrazovanje">Obrazovanje</label>
+                <label for="obrazovanje">Obrazovanje </label>
                     <select onChange={this.educationChange} ref="edu">
                         {this.state.educations.length>0 && <Options list={this.state.educations}/>}
                     </select> 
@@ -103,20 +109,20 @@ debugger
 
                  {this.state.addEducation>0 && 
                    <div className="form-part">
-                   <label for="addEdu">Dodaj obrazovanje</label>
+                   <label for="addEdu">Dodaj obrazovanje </label>
                      <input name="addEdu" ref="addEdu" /> 
                      <input type="button" value="Dodaj" onClick={this.addEducation} /> 
                     </div>             
                 }
 
                 <div className="form-part">
-                <label for="staz">Radni staž</label>
+                <label for="staz">Radni staž </label>
                     <input name="staz" ref="staz" autoComplete="off" /> 
                 </div>
 
                 <h4>Podaci o Centru za socijalni rad</h4>
                 <div className="form-part">
-                <label for="obrazovanje">Velicina centra</label>
+                <label for="obrazovanje">Velicina centra </label>
                     <select ref="velicina">
                         <option value={0}>Izaberi veličinu</option>
                         <option value={1}>Do 3 voditelja slučaja</option>
@@ -127,28 +133,38 @@ debugger
 
                  <h4>Logovanje</h4>
                  <div className="form-part">
-                <label for="tip">Tip korisnika</label>
+                <label for="tip">Tip pristupa </label>
                     <select ref="tip">
-                        <option value={2}>Zaposleni</option>
-                        <option value={1}>Administrator</option>
+                        <option value={2}>Voditelj slučaja</option>
+                        <option value={1}>Supervizor</option>
                     </select> 
                 </div>
                  <div className="form-part">
-                <label for="username">Korisničko ime</label>
+                <label for="username">Ime za logovanje </label>
                     <input name="username"  ref="username" autoComplete="off" /> 
                 </div>
                 <div className="form-part">
-                <label for="password1">Loznika</label>
+                <label for="password1">Loznika </label>
                     <input name="password1" type="password" ref="password1" autoComplete="off" /> 
                 </div>
                 <div className="form-part">
-                <label for="password2">Loznika</label>
+                <label for="password2">Loznika </label>
                     <input name="password2" type="password" ref="password2" autoComplete="off" /> 
                 </div>
 
                 <div className="form-part">
                     <input name="ok" type="submit" value="Sačuvaj" /> 
                 </div>
+
+                <div id="izmena">
+                    <hr />
+                    <h3>Izmeni podatke o voditelju slučaja</h3>
+                    <label for="users">Izaberi voditelja slučaja </label>
+                    <select ref="users">
+                        {this.state.opstine.length>0 && <Options list={this.state.userList}/>}
+                    </select> 
+                </div>
+
             </form>
         )
     }
