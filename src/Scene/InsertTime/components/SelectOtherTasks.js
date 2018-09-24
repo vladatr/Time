@@ -18,8 +18,9 @@ class SelectOtherTasks extends React.Component {
                 <h3>Vreme koje nije vezano za posao</h3>
                 <select onChange={this.onChangeSelect}   value={this.state.value}> 
                     <option  value={0}>-- Izberi stavku --</option> 
-                    <option  value={1}>Dnevni odmor</option> 
-                    <option  value={2}>Bolovanje</option> 
+                    <option  value={1}>dnevni odmor</option> 
+                    <option  value={2}>bolovanje</option> 
+                    <option  value={2}>odsustvo po odobrenju direktora/rukovodioca</option> 
                 </select> 
             </div>
         )

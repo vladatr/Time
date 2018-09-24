@@ -25,7 +25,11 @@ class SelectNonProjectActivities extends React.Component {
                     <option  value={5}>telefonska komunikacija</option> 
                     <option  value={6}>dežurstvo </option> 
                     <option  value={7}>članstvo u stručnom timu</option> 
-                    <option  value={8}>popunjavanje dnevnika</option> 
+                    <option  value={8}>rad u prijemnoj kancelariji</option> 
+                    <option  value={9}>rad na tuđim predmetima</option> 
+                    <option  value={10}>razgovor sa strankama na predmetima koji su završeni</option> 
+                    <option  value={11}>odlazak u sud/policiju u svojstvu organa starateljstva</option> 
+                    <option  value={12}>popunjavanje dnevnika</option> 
                 </select> 
             </div>
         )

@@ -10,7 +10,7 @@ class Projects extends React.Component{
 
     state = {
         name: "" ,
-        brojKorisnika: 0 ,
+        brojKorisnika: 1 ,
         info: "",
         //dataEntered: false,
         values: [],
