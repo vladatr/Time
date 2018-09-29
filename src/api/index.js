@@ -209,3 +209,23 @@ export const getFilteredProjects = (admin, searchText) => {
         return err
     })  
 }
+
+export const getFilteredProjectsForUser = (user, searchText) => {
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        url: server + 'getFilteredProjectsForUser.php',
+        data: {user, searchText}
+     }
+    return axios(options)
+    .then(res => {
+        debugger
+       return res.data
+    })
+    .catch(err => {
+        debugger
+        return err
+    })  
+}

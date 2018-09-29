@@ -10,7 +10,6 @@ import Footer from './Footer'
 
 
 const AppFrame = (props) => {
-    debugger
    // if(!props.user.username) props.history.push('/Prijava')
     return (
       <div className="content-wrapper">

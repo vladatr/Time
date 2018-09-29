@@ -132,3 +132,20 @@ export const checkUser = (username, password) => {
         return err
     })  
 }
+
+export const getSupervisors = () => {
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        url: server + "getSupervisors.php"
+    }
+    return axios(options)
+    .then(res => {
+        return res.data
+    })
+    .catch(err => {
+        return err
+    })  
+}
